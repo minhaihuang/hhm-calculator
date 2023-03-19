@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+ <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="hhm计算器" />
+  <title>hhm计算器</title>
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <meta property="og:title" content="免費線上計算機" />
+  <meta property="og:site_name" content="免費線上計算機" />
+ </head>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.4.1.min.js"></script>
+
+ <script>var appVersionURLPrefix = "/zh-tw/v/0.1.0"</script>
+    <script type="text/javascript">
+		function addCharToCalculator(e) {
+			var t = $("form .calculator-input")[0]; ! t.value || "0" == t.value && -1 == [".", "-", "+", "*", "/"].indexOf(e) ? t.value = e: t.value += e
+		}
+		function deleteChar(input) {
+			input.value = input.value.substring(0, input.value.length - 1)
+		}
+		function addToSC(e) {
+            var t = $("#scientific_calculator form .calculator-input"),
+            n = /\-|\+|\*|\//;
+            e.match(n) && (t.val().slice( - 1) == e || e.match(/\*|\//) && ("" == $.trim(t.val()) || t.val().slice( - 1).match(n))) || t.val(t.val() + e)
+        }
+		function submit1() {
+         var t = $("form .calculator-input")[0];
+         var p = $("#expression");
+
+         $.get("http://localhost:8080/calculator/cal", { expression: t.value},
+           function(data){
+            if(data.code == 0) {
+              p.html(data.data.expression);
+              t.value = data.data.result;
+            }else{
+              p.html(data.data.expression);
+              t.value = "NAN";
+            }
+
+           });
+		}
+        function undo() {
+         var t = $("form .calculator-input")[0];
+         var p = $("#expression");
+         $.get("http://localhost:8080/calculator/undo", {},
+                 function(data){
+                  if(data.code == 0) {
+                   p.html(data.data.expression);
+                   t.value = data.data.result;
+                  }else{
+                   p.html(data.data.expression);
+                   t.value = "NAN";
+                  }
+
+                 });
+        }
+        function redo() {
+         var t = $("form .calculator-input")[0];
+         var p = $("#expression");
+         $.get("http://localhost:8080/calculator/redo", {},
+                 function(data){
+                  if(data.code == 0) {
+                   p.html(data.data.expression);
+                   t.value = data.data.result;
+                  }else{
+                   p.html(data.data.expression);
+                   t.value = "NAN";
+                  }
+
+                 });
+        }
+
+        function undo() {
+         var t = $("form .calculator-input")[0];
+         var p = $("#expression");
+         $.get("http://localhost:8080/calculator/undo", {},
+                 function(data){
+                  if(data.code == 0) {
+                   p.html(data.data.expression);
+                   t.value = data.data.result;
+                  }else{
+                   p.html(data.data.expression);
+                   t.value = "NAN";
+                  }
+
+                 });
+        }
+        function clearHistory() {
+         var t = $("form .calculator-input")[0];
+         var p = $("#expression");
+         $.get("http://localhost:8080/calculator/clearHistory", {},
+                 function(data){
+                  if(data.code == 0) {
+                   p.html(data.data.expression);
+                   t.value = data.data.result;
+                  }else{
+                   p.html(data.data.expression);
+                   t.value = "NAN";
+                  }
+
+                 });
+        }
+	  </script>
+ <body>
+  <div class="container content-a">
+   <div class="row">
+    <div class="col-sm-12">
+     <div class="content-a">
+      <div id="scientific_calculator" class="spaced-top">
+       <div class="text-center">
+        <form name="sci-calc" id="sci-calc" class="text-left" dir="ltr">
+         <div class="row">
+          <div class="col-sm-12">
+           <p id="expression"></p>
+           <input type="text" name="display" class="calculator-input mousetrap form-control input-lg" placeholder="0" />
+           <br />
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-sm-12">
+           <!--           <button type="button" class="calculator-btn btn btn-default mousetrap" onclick="subX(this.form)">1/x</button> -->
+           <input type="button" class="calculator-btn calculator-btn-backspace btn btn-default mousetrap" value="C" onclick="clearHistory()" />
+           <button type="button" class="calculator-btn calculator-btn-backspace btn btn-default mousetrap" onclick="deleteChar(this.form.display)">←</button>
+           <button type="button" class="calculator-btn calculator-btn-backspace btn btn-default mousetrap" onclick="undo()">undo</button>
+           <button type="button" class="calculator-btn calculator-btn-backspace btn btn-default mousetrap" onclick="redo()">redo</button>
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-sm-12">
+
+           <input type="button" class="calculator-btn calculator-btn-7 btn btn-default mousetrap" value=" 7 " onclick="addCharToCalculator('7')" />
+           <input type="button" class="calculator-btn calculator-btn-8 btn btn-default mousetrap" value=" 8 " onclick="addCharToCalculator('8')" />
+           <input type="button" class="calculator-btn calculator-btn-9 btn btn-default mousetrap" value=" 9 " onclick="addCharToCalculator('9')" />
+           <input type="button" class="calculator-btn calculator-btn-divide btn btn-default mousetrap" value=" &divide; " onclick="addToSC('/')" />
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-sm-12">
+          <input type="button" class="calculator-btn calculator-btn-4 btn btn-default mousetrap" value=" 4 " onclick="addCharToCalculator('4')" />
+           <input type="button" class="calculator-btn calculator-btn-5 btn btn-default mousetrap" value=" 5 " onclick="addCharToCalculator('5')" />
+           <input type="button" class="calculator-btn calculator-btn-6 btn btn-default mousetrap" value=" 6 " onclick="addCharToCalculator('6')" />
+           <input type="button" class="calculator-btn calculator-btn-multiply btn btn-default mousetrap" value=" &times; " onclick="addToSC('*')" />
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-sm-12">
+          <input type="button" class="calculator-btn calculator-btn-1 btn btn-default mousetrap" value=" 1 " onclick="addCharToCalculator('1')" />
+           <input type="button" class="calculator-btn calculator-btn-2 btn btn-default mousetrap" value=" 2 " onclick="addCharToCalculator('2')" />
+           <input type="button" class="calculator-btn calculator-btn-3 btn btn-default mousetrap" value=" 3 " onclick="addCharToCalculator('3')" />
+           <input type="button" class="calculator-btn calculator-btn-subtract btn btn-default mousetrap" value=" – " onclick="addToSC('-')" />
+          </div>
+         </div>
+         <div class="row">
+          <div class="col-sm-12">
+          <input type="button" class="calculator-btn calculator-btn-0 btn btn-default mousetrap" value=" 0 " onclick="addCharToCalculator('0')" />
+           <button type="button" class="calculator-btn calculator-btn-period point btn btn-default mousetrap" onclick="addCharToCalculator('.')">.</button>
+           <!-- <input type="button" class="calculator-btn btn btn-default mousetrap" value=" +/– " onclick="changeSign(this.form.display)"> -->
+           <input type="button" class="calculator-btn calculator-btn-add btn btn-default mousetrap" value=" + " onclick="addToSC('+')" />
+           <input type="button" class="calculator-btn  calculator-btn-enter btn btn-info mousetrap" value="=" onclick="submit1()" name="enter" />
+          </div>
+         </div>
+        </form>
+       </div>
+      </div>
+      <link href="calculator.css" rel="stylesheet" type="text/css" />
+     </div>
+    </div>
+   </div>
+  </div>
+ </body>
+</html>
