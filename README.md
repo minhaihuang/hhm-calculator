@@ -7,4 +7,5 @@
     运行jar: /file/hhm-calculator-2.6.7.jar
     > java -jar hhm-calculator-2.6.7.jar
     > 访问 http://localhost:8080/test.html
+    > 核心代码： com.hhm.calculator.util.MyCalculator
 ![img.png](file/img.png)
